@@ -2,16 +2,14 @@ extends Node2D
 class_name Neurone
 
 var id : String
-var value : float: 
-	set(new_value): if(new_value <= 1 && new_value >= 0): value = new_value
-	else: printerr("Value too large or too small")
+var value
 var threshold : float
 var timer : Timer
 var recieved_value : float
 var connections : Array
 var state : bool
 
-signal fired
+signal fired(value)
 
 var color : Color = Color.WHITE
 #Only for testing
@@ -28,8 +26,10 @@ func _ready() -> void:
 
 func fire(): 
 	self.state = true
+	emit_signal("fired", value)
 	for c in connections:
 		c.send(self, self.value)
+		
 	self.color = Color.RED
 	queue_redraw()
 	

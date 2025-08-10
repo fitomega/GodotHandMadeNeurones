@@ -1,9 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://jhcqkhj08uqw"]
+[gd_scene load_steps=3 format=3 uid="uid://jhcqkhj08uqw"]
 
 [ext_resource type="Script" uid="uid://biyaks0lpfkhy" path="res://objects/neuronal_network.gd" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://duyvrhfak4ie3" path="res://scenes/enemy.tscn" id="2_0wfyh"]
 
 [node name="Main" type="Node2D"]
 
-[node name="NeuronalNetwork" type="Node2D" parent="."]
+[node name="NeuronalNetwork" type="Node2D" parent="." node_paths=PackedStringArray("Enemy")]
 script = ExtResource("1_o5qli")
+Enemy = NodePath("../Enemy")
 metadata/_custom_type_script = "uid://biyaks0lpfkhy"
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("neuronalNetwork") instance=ExtResource("2_0wfyh")]
+neuronalNetwork = NodePath("../NeuronalNetwork")

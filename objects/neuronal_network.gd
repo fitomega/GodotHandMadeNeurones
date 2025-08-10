@@ -3,7 +3,7 @@ class_name NeuronalNetwork
 
 var neurones = Array([], TYPE_OBJECT, "Node", Neurone)
 var connections = []
-
+@export var Enemy : EnemyAI
 var active_neurones
 
 #test
@@ -11,7 +11,13 @@ var process_time = 0
 
 func _ready() -> void:
 	# Rellenamos las neuronas de forma random
-	for i in range(1, 5): neurones.append(Neurone.InputN.new("N" + str(i) + "| Input", 0, 0))
+	var n0 : Neurone = Neurone.OutputN.new("N" + str(1) + "| Output", 0, 0)
+	neurones.append(n0)
+	n0.value = Vector2(200, 0)
+	n0.fired.connect(func(value): 
+		Enemy.move(value))
+	
+	for i in range(2, 5): neurones.append(Neurone.InputN.new("N" + str(i) + "| Input", 0, 0))
 	for i in range(5, 10): neurones.append(Neurone.OutputN.new("N" + str(i) + "| Output", 0, 0))
 	for i in range(10, 15): neurones.append(Neurone.MiddleN.new("N" + str(i) + "| Middle", 0, 0))
 	
@@ -39,3 +45,11 @@ func _process(delta: float) -> void:
 					connections.append(new_conn)
 					self.add_child(new_conn)
 		)
+
+	#temporarely auto stimulate
+	if process_time < 10000 && process_time % 50 == 0:
+		first_stimulate()
+	
+func first_stimulate():
+	var inputs = neurones.filter(func(n): return n is Neurone.InputN)
+	inputs.pick_random().recieve(10)
