@@ -22,13 +22,32 @@ position = Vector2(631, 326)
 neuronalNetwork = NodePath("../NeuronalNetwork")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(736, 302)
+position = Vector2(800, 318)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_0wfyh")
 
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(335, 326)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_0wfyh")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(564, 318)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(0, -218)
+rotation = -1.57072
+shape = SubResource("RectangleShape2D_0wfyh")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(244, 232)
+rotation = -1.57072
+shape = SubResource("RectangleShape2D_0wfyh")
+
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(477, 429)
+position = Vector2(516, 645)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_sugp2")
