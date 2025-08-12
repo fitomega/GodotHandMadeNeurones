@@ -24,6 +24,8 @@ func _ready() -> void:
 	timer = Timer.new()
 	self.add_child(timer)
 
+	
+
 func fire(): 
 	self.state = true
 	emit_signal("fired", value)
@@ -51,14 +53,14 @@ class OutputN:
 	func fire(): super()
 class InputN: 
 	extends Neurone
-	func recieve(new_value): super(new_value)
+	func send(): fire()
 class MiddleN: 
 	extends Neurone
 	func fire(): super()
 	func recieve(new_value): super(new_value)
 
 func _to_string() -> String:
-	return self.name + " | " + str(self.value) + " | " + str(self.threshold) + " | " + str(self.recieved_value)
+	return self.name + " | " + str(self.value) + " | " + str(self.threshold) + " | " + str(self.recieved_value) + " | Time ->" + str(self.timer.time_left)
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_accept") && get_global_mouse_position().distance_to(self.position) < 5:

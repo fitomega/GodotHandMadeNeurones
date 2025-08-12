@@ -18,11 +18,11 @@ func _init(id, neurone1, neurone2) -> void:
 	self.origin.connections.append(self)
 	self.target.connections.append(self)
 	self.name = id
+	self.weight = 0
 	
 func send(n : Neurone, value):
 	if n == origin:
 		target.recieve(value * weight)
-		
 		self.color = Color.RED
 		queue_redraw()
 		var timer : Timer = Timer.new()
