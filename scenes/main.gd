@@ -1,0 +1,6 @@
+extends Node2D
+
+const MAX_SCENE_WIDTH = 1152
+const MIN_SCENE_WIDTH = 0
+const MAX_SCENE_HEIGHT = 648
+const MIN_SCENE_HEIGHT = 0
