@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1f4sn5se55e8"]
+
+[ext_resource type="Script" uid="uid://bcm5vvgkjrj0l" path="res://scenes/main.gd" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://c0d8n1eu2j7tc" path="res://objects/NeuronalNetwork.gd" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://bvia05a4icdua" path="res://objects/EnemyAI.gd" id="3_sugp2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_o5qli")
+
+[node name="NeuronalNetwork" type="Node2D" parent="." node_paths=PackedStringArray("enemy")]
+script = ExtResource("2_0wfyh")
+enemy = NodePath("../EnemyAI")
+metadata/_custom_type_script = "uid://c0d8n1eu2j7tc"
+
+[node name="EnemyAI" type="CharacterBody2D" parent="."]
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bvia05a4icdua"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyAI"]
+shape = SubResource("RectangleShape2D_jyhfs")

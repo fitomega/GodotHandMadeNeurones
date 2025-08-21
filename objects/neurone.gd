@@ -1,67 +1,63 @@
 extends Node2D
 class_name Neurone
 
-var id : String
+var state
 var value
-var threshold : float
-var timer : Timer
-var recieved_value : float
-var connections : Array
-var state : bool
+var activation_threshold = 1
+var activation_level = 0
+var id
+var connections = []
+
+const MAX_FRAME_TIME = 0.2
+var frame_time = 0.0
+
+const MAX_SHUT_DOWN_TIME = 0.2
+var shut_down_time = 0.0
 
 signal fired(value)
 
-var color : Color = Color.WHITE
-#Only for testing
-func _draw() -> void: draw_circle(Vector2(0,0),5,color,true)
-func _init(id, value, threshold = 0) -> void:
+var color : Color
+enum  types {OUTPUT, INPUT, MIDDLE}
+var type
+func _init(id : String, value = null, type : types = types.MIDDLE) -> void:
 	self.id = id
-	self.value = value
-	self.threshold = threshold
-	self.state = false
 	self.name = id
-func _ready() -> void:
-	timer = Timer.new()
-	self.add_child(timer)
+	self.value = value
+	self.type = type
 
-func fire(): 
-	self.state = true
-	emit_signal("fired", value)
-	for c in connections:
-		c.send(self, self.value)
-		
-	self.color = Color.RED
-	queue_redraw()
-	
-
-func recieve(new_value):
-	self.recieved_value += new_value 
-	if self.recieved_value >= threshold:
-		self.fire()
-	timer.start(1)
-	timer.timeout.connect(func():
-		self.state = false
-		self.recieved_value = 0
-		self.color = Color.WHITE
+func _process(delta):
+	if(frame_time > 0): 
+		frame_time -= delta
+	if(shut_down_time > 0): 
+		shut_down_time -= delta
+	else:
+		color = Color.WHITE
+		self.activation_level = 0
+		shut_down_time = MAX_SHUT_DOWN_TIME
+		state = false
 		queue_redraw()
-	)
 
-class OutputN: 
-	extends Neurone
-	func fire(): super()
-class InputN: 
-	extends Neurone
-	func recieve(new_value): super(new_value)
-class MiddleN: 
-	extends Neurone
-	func fire(): super()
-	func recieve(new_value): super(new_value)
+func recieve(value): 
+	activation_level += value
+	if activation_level >= activation_threshold: fire()
 
-func _to_string() -> String:
-	return self.name + " | " + str(self.value) + " | " + str(self.threshold) + " | " + str(self.recieved_value)
+func fire():
+	if(frame_time <= 0):
+		connections.any(func(c : Connection): c.fire(self, value))
+		emit_signal("fired", value)
+		state = true
+		self.color = Color.RED
+		self.activation_level = 0
+		frame_time = MAX_FRAME_TIME
+		queue_redraw()
+
+#testing
+func _draw() -> void:
+	draw_circle(Vector2(0,0),5,self.color)
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_accept") && get_global_mouse_position().distance_to(self.position) < 5:
-		self.recieve(10)
+		recieve(0.5)
+		
 	if Input.is_action_just_pressed("ui_down") && get_global_mouse_position().distance_to(self.position) < 5:
 		print(self)

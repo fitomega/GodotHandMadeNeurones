@@ -1,14 +1,62 @@
-[gd_scene load_steps=3 format=3 uid="uid://jhcqkhj08uqw"]
+[gd_scene load_steps=7 format=3 uid="uid://d1f4sn5se55e8"]
 
-[ext_resource type="Script" uid="uid://biyaks0lpfkhy" path="res://objects/neuronal_network.gd" id="1_o5qli"]
-[ext_resource type="PackedScene" uid="uid://duyvrhfak4ie3" path="res://scenes/enemy.tscn" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://bcm5vvgkjrj0l" path="res://scenes/main.gd" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://c0d8n1eu2j7tc" path="res://objects/NeuronalNetwork.gd" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://bvia05a4icdua" path="res://objects/EnemyAI.gd" id="3_sugp2"]
+[ext_resource type="Script" uid="uid://c0dlkll88bjjb" path="res://objects/Neurone.gd" id="4_jyhfs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
+size = Vector2(24, 674)
 
 [node name="Main" type="Node2D"]
-
-[node name="NeuronalNetwork" type="Node2D" parent="." node_paths=PackedStringArray("Enemy")]
 script = ExtResource("1_o5qli")
-Enemy = NodePath("../Enemy")
-metadata/_custom_type_script = "uid://biyaks0lpfkhy"
 
-[node name="Enemy" parent="." node_paths=PackedStringArray("neuronalNetwork") instance=ExtResource("2_0wfyh")]
+[node name="NeuronalNetwork" type="Node2D" parent="." node_paths=PackedStringArray("enemy")]
+script = ExtResource("2_0wfyh")
+enemy = NodePath("../EnemyAI")
+metadata/_custom_type_script = "uid://c0d8n1eu2j7tc"
+
+[node name="EnemyAI" type="CharacterBody2D" parent="." node_paths=PackedStringArray("neuronalNetwork", "target", "food")]
+position = Vector2(577, 283)
+script = ExtResource("3_sugp2")
 neuronalNetwork = NodePath("../NeuronalNetwork")
+target = NodePath("../Target")
+food = NodePath("../Food")
+metadata/_custom_type_script = "uid://bvia05a4icdua"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyAI"]
+shape = SubResource("RectangleShape2D_jyhfs")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(296, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(2, 327)
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(888, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(2, 327)
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(-299, 54)
+rotation = -1.57232
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(-319, 580)
+rotation = -1.57232
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="Target" type="Node2D" parent="."]
+position = Vector2(778, 492)
+
+[node name="Food" type="Node2D" parent="."]
+position = Vector2(411, 177)
+script = ExtResource("4_jyhfs")
+metadata/_custom_type_script = "uid://c0dlkll88bjjb"
