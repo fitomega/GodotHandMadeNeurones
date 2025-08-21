@@ -1,6 +1,30 @@
 extends Node2D
 class_name Neurone
 
+enum  types {OUTPUT, INPUT, MIDDLE}
+var type
+
+var MAX_ACTIVATION_COLDOWN : float
+var MAX_RECIEVE_TIME : float
+var activation_coldown : float
+var recieve_time : float
+
+var id : String
+var state : bool
+var activation_threshold : float
+var activation_value : float
+var fire_value : float
+var Connections : Array
+var log : Array[Array]
+
+signal fired(value)
+
+func _init(id : String, threshold:float, type:types):
+	self.id = id
+	self.activation_threshold = threshold
+	self.type = type
+	
+"""
 var state
 var value
 var activation_threshold = 1
@@ -61,3 +85,4 @@ func _input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("ui_down") && get_global_mouse_position().distance_to(self.position) < 5:
 		print(self)
+"""
